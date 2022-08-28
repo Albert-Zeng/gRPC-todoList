@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"go.etcd.io/etcd/api/v3/mvccpb"
 	"net/http"
 	"strconv"
 	"strings"
@@ -131,7 +132,7 @@ func (r *Register) keepAlive() {
 }
 
 func (r *Register) UpdateHandler() http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
+	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		weightstr := req.URL.Query().Get("weight")
 		weight, err := strconv.Atoi(weightstr)
 		if err != nil {
@@ -158,7 +159,7 @@ func (r *Register) UpdateHandler() http.HandlerFunc {
 		}
 
 		_, _ = w.Write([]byte("update server weight success"))
-	}
+	})
 }
 
 func (r *Register) GetServerInfo() (Server, error) {
@@ -175,4 +176,84 @@ func (r *Register) GetServerInfo() (Server, error) {
 	}
 
 	return server, err
+}
+
+func (r *Register) GetTargetServer(key string) (ser *Server, err error) {
+	if r.cli, err = clientv3.New(clientv3.Config{
+		Endpoints:   r.EtcdAddrs,
+		DialTimeout: time.Duration(r.DialTimeout) * time.Second,
+	}); err != nil {
+		return
+	}
+
+	ctx := context.Background()
+	res, err := r.cli.Get(ctx, key, clientv3.WithPrefix()); if err != nil {
+		return
+	}
+	for _, kv := range res.Kvs {
+		ser = &Server{}
+		err = json.Unmarshal(kv.Value, ser); if err != nil {
+			r.logger.Warn("etcd response.Value Unmarshal error, err(%v)", err)
+			continue
+		}
+		return
+	}
+	return
+}
+
+// 相当于 resolver 的简易实现
+func (r *Register) WatchEtcdServerInfo(serverMap map[string]*Server, key string) (err error) {
+	// serverMap version/name/protoc(http/grpc):*Server
+	if r.cli, err = clientv3.New(clientv3.Config{
+		Endpoints:   r.EtcdAddrs,
+		DialTimeout: time.Duration(r.DialTimeout) * time.Second,
+	}); err != nil {
+		return
+	}
+
+	ctx := context.Background()
+	res, err := r.cli.Get(ctx, key, clientv3.WithPrefix()); if err != nil {
+		return
+	}
+	for _, kv := range res.Kvs {
+		v := &Server{}
+		err = json.Unmarshal(kv.Value, v); if err != nil {
+			r.logger.Warn("etcd response.Value Unmarshal error, err(%v)", err)
+			continue
+		}
+		split := strings.Split(string(kv.Key), "/")
+		k := strings.Join(split[:len(split)-1], "/")
+		serverMap[k] = v
+	}
+
+	// 监听etcd变化
+	go func() {
+		watchStartRevision := res.Header.Revision + 1
+		r.logger.Info("watch etcd keys beginning with revision: ", watchStartRevision)
+		watchRespChan := r.cli.Watch(ctx, key, clientv3.WithPrefix(), clientv3.WithRev(watchStartRevision))
+		// 处理kv变化事件
+		for watchResp := range watchRespChan {
+			for _, event := range watchResp.Events {
+				kv := event.Kv
+				v := &Server{}
+				if event.Kv.Value != nil {
+					err = json.Unmarshal(kv.Value, v); if err != nil {
+						r.logger.Warn("etcd response.Value Unmarshal error, value(%s), err(%v)", kv.Value, err)
+						continue
+					}
+				}
+				split := strings.Split(string(kv.Key), "/")
+				k := strings.Join(split[:len(split)-1], "/")
+
+				switch event.Type {
+				case mvccpb.PUT:
+					serverMap[k] = v
+				case mvccpb.DELETE:
+					delete(serverMap, k)
+				}
+			}
+		}
+	}()
+
+	return
 }

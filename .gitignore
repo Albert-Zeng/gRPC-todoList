@@ -13,9 +13,9 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
-user/config/config.yml
-task/config/config.yml
-api-gateway/config/config.yml
+user/config/config.yml.example
+task/config/config.yml.example
+api-gateway/config/config.yml.example
 api-gateway/logs
 user/logs
 task/logs

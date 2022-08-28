@@ -45,20 +45,26 @@ func (user *User) CheckUserExist(req *service.UserRequest) bool {
 }
 
 func (user *User) ShowUserInfo (req *service.UserRequest)(err error) {
-	if exist := user.CheckUserExist(req); exist {
-		return nil
+	if exist := user.CheckUserExist(req); !exist {
+		return errors.New("UserName Not Exist")
 	}
-	return errors.New("UserName Not Exist")
+	if ok := user.CheckPassword(req.Password); !ok {
+		return errors.New("Password Not Right")
+	}
+	return nil
 }
 
-func (*User) Create (req *service.UserRequest) error {
-	var user User
+func (user *User) GetUserInfo (id uint32)(err error) {
+	return DB.Where("user_id=?", id).First(&user).Error;
+}
+
+func (user *User) Create (req *service.UserRequest) error {
 	var count int64
 	DB.Where("user_name=?", req.UserName).Count(&count)
 	if count!=0 {
 		return errors.New("UserName Exist")
 	}
-	user = User{
+	*user = User{
 		UserName: req.UserName,
 		NickName: req.NickName,
 	}

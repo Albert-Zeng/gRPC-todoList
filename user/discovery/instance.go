@@ -11,17 +11,20 @@ import (
 
 type Server struct {
 	Name    string `json:"name"`
+	Protoc  string `json:"protoc"`
 	Addr    string `json:"addr"`    // 地址
 	Version string `json:"version"` // 版本
 	Weight  int64  `json:"weight"`  // 权重
 }
 
 func BuildPrefix(server Server) string {
-	if server.Version == "" {
-		return fmt.Sprintf("/%s/", server.Name)
+	prefix := "/"
+	if server.Version != "" {
+		prefix += fmt.Sprintf("%s/", server.Version)
 	}
+	prefix += fmt.Sprintf("%s/%s/", server.Name, server.Protoc)
 
-	return fmt.Sprintf("/%s/%s/", server.Name, server.Version)
+	return prefix
 }
 
 func BuildRegisterPath(server Server) string {

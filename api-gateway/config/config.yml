@@ -1,0 +1,16 @@
+server:
+  domain: api-gateway
+  version: 1.0
+  jwtSecret: 38324
+  httpAddress: "127.0.0.1:8034"
+
+etcd:
+  address: 127.0.0.1:2379
+
+redis:
+  address: 127.0.0.1:6379
+  password:
+
+domain:
+  user: 127.0.0.1:10001
+  task: 127.0.0.1:10002

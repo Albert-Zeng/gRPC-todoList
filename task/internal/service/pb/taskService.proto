@@ -3,6 +3,8 @@ package pb;
 import "taskModels.proto";
 option go_package = "/internal/service;service";
 
+import "google/api/annotations.proto";
+
 message TaskRequest{
     uint32 TaskID=1;
     uint32 UserID=2;
@@ -15,8 +17,10 @@ message TaskRequest{
 
 
 message TasksDetailResponse{
-  repeated TaskModel TaskDetail=1;
-  uint32 Code=2;
+  uint32 Code=1;
+  repeated TaskModel TaskDetail=2;
+  string UserName=3;
+  string NickName=4;
 }
 
 message CommonResponse{
@@ -26,8 +30,27 @@ message CommonResponse{
 }
 
 service TaskService{
-  rpc TaskCreate(TaskRequest) returns(CommonResponse);
-  rpc TaskUpdate(TaskRequest) returns(CommonResponse);
-  rpc TaskShow(TaskRequest) returns(TasksDetailResponse);
-  rpc TaskDelete(TaskRequest) returns(CommonResponse);
+  rpc TaskCreate(TaskRequest) returns(CommonResponse) {
+    option (google.api.http) = {
+      post:"/api/v1/task/create",
+      body:"*",
+    };
+  };
+  rpc TaskUpdate(TaskRequest) returns(CommonResponse) {
+    option (google.api.http) = {
+      put:"/api/v1/task/update",
+      body:"*",
+    };
+  };
+  rpc TaskShow(TaskRequest) returns(TasksDetailResponse) {
+    option (google.api.http) = {
+      get:"/api/v1/task/show",
+    };
+  };
+  rpc TaskDelete(TaskRequest) returns(CommonResponse) {
+    option (google.api.http) = {
+      delete:"/api/v1/task/delete",
+      body:"*",
+    };
+  };
 }

@@ -1,100 +1,58 @@
 package main
 
 import (
+	"api-gateway/config"
 	"api-gateway/discovery"
-	"api-gateway/internal/service"
-	"api-gateway/middleware/wrapper"
+	"api-gateway/middleware"
 	"api-gateway/pkg/util"
-	"api-gateway/routes"
-	"context"
-	"fmt"
+	"api-gateway/proxy"
+	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/resolver"
 	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
 	"time"
 )
 
 func main() {
-	InitConfig()
-	go startListen() //转载路由
-	{
-		osSignals := make(chan os.Signal, 1)
-		signal.Notify(osSignals, os.Interrupt, os.Kill, syscall.SIGTERM, syscall.SIGINT, syscall.SIGKILL)
-		s := <-osSignals
-		fmt.Println("exit! ", s)
-	}
-	fmt.Println("gateway listen on :3000")
-}
-
-func startListen() {
+	config.InitConfig()
 	// etcd注册
 	etcdAddress := []string{viper.GetString("etcd.address")}
-	etcdRegister := discovery.NewResolver(etcdAddress, logrus.New())
-	resolver.Register(etcdRegister)
-	ctx, _ := context.WithTimeout(context.Background(), 3*time.Second)
-	// 服务名
-	userServiceName := viper.GetString("domain.user")
-	taskServiceName := viper.GetString("domain.task")
-
-	// RPC 连接
-	connUser, err := RPCConnect(ctx, userServiceName, etcdRegister)
+	etcdRegister := discovery.NewRegister(etcdAddress, logrus.New())
+	defer etcdRegister.Stop()
+	err := proxy.WatchEtcdServer(etcdRegister)
 	if err != nil {
-		return
+		panic(err)
 	}
-	userService := service.NewUserServiceClient(connUser)
+	//etcdRegister := discovery.NewResolver(etcdAddress, logrus.New())
+	//resolver.Register(etcdRegister)
+	//defer etcdRegister.Close()
 
-	connTask, err := RPCConnect(ctx, taskServiceName, etcdRegister)
-	if err != nil {
-		return
-	}
-	taskService := service.NewTaskServiceClient(connTask)
-
-	// 加入熔断 TODO main太臃肿了
-	wrapper.NewServiceWrapper(userServiceName)
-	wrapper.NewServiceWrapper(taskServiceName)
-	
-	ginRouter := routes.NewRouter(userService, taskService)
-	server := &http.Server{
-		Addr:           viper.GetString("server.port"),
+	httpAddress := viper.GetString("server.httpAddress")
+	gin.SetMode(gin.DebugMode)
+	ginRouter := gin.Default()
+	ginRouter.Use(middleware.Cors())
+	ginRouter.Use(middleware.JWT())
+	//ginRouter.Use(middleware.Cors(), middleware.InitMiddleware(service), middleware.ErrorMiddleware())
+	//store := cookie.NewStore([]byte("something-very-secret"))
+	//ginRouter.Use(sessions.Sessions("mysession", store))
+	ginRouter.Use(func() gin.HandlerFunc {
+		return func(c *gin.Context) {
+			proxy.RoutesProxy(c)
+		}
+	}())
+	httpServer := &http.Server{
+		Addr:           httpAddress,
 		Handler:        ginRouter,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
-	err = server.ListenAndServe()
-	if err != nil {
-		fmt.Println("绑定HTTP到 %s 失败！可能是端口已经被占用，或用户权限不足")
-		fmt.Println(err)
-	}
 	go func() {
 		// 优雅关闭
-		util.GracefullyShutdown(server)
+		util.GracefullyShutdown(httpServer)
 	}()
-	if err := server.ListenAndServe(); err != nil {
-		fmt.Println("gateway启动失败, err: ", err)
-	}
-}
-
-func RPCConnect(ctx context.Context, serviceName string, etcdRegister *discovery.Resolver) (conn *grpc.ClientConn, err error) {
-	opts := []grpc.DialOption{
-		grpc.WithInsecure(),
-	}
-	addr := fmt.Sprintf("%s:///%s", etcdRegister.Scheme(), serviceName)
-	conn, err = grpc.DialContext(ctx, addr, opts...)
-	return
-}
-
-func InitConfig() {
-	workDir, _ := os.Getwd()
-	viper.SetConfigName("config")
-	viper.SetConfigType("yml")
-	viper.AddConfigPath(workDir + "/config")
-	err := viper.ReadInConfig()
+	logrus.Info("http server started listen on ", httpAddress)
+	err = httpServer.ListenAndServe()
 	if err != nil {
 		panic(err)
 	}

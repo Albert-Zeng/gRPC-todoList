@@ -2,7 +2,7 @@ syntax="proto3";
 package pb;
 option go_package = "/internal/service;service";
 
-//protoc -I internal/service/pb internal/service/pb/*.proto --go_out=plugins=grpc:.
+//protoc -I internal/service/pb internal/service/pb/*.proto -I ~/Desktop/learn/protos/third_party --go_out . --grpc-gateway_out . --go-grpc_out=require_unimplemented_servers=false:. --grpc-gateway_opt allow_delete_body=true
 
 message TaskModel {
     // @inject_tag: json:"favorite_id"

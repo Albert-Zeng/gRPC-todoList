@@ -1,0 +1,19 @@
+syntax="proto3";
+package pb;
+option go_package = "/internal/dependency;dependency";
+
+//protoc internal/dependency/user/*.proto --go_out . --go-grpc_out=require_unimplemented_servers=false:.
+
+message UserModel {
+  uint32 UserID=1;
+  string UserName=2;
+  string NickName=3;
+}
+
+message UserDetailResponse{
+  UserModel UserDetail = 1;
+}
+
+service UserService{
+  rpc UserInfo(UserModel) returns(UserDetailResponse);
+}

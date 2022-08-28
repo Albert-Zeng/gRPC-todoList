@@ -2,6 +2,11 @@ package handler
 
 import (
 	"context"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
+	"google.golang.org/grpc"
+	"task/discovery"
+	"task/internal/dependency"
 	"task/internal/repository"
 	"task/internal/service"
 	"task/pkg/e"
@@ -39,6 +44,28 @@ func (*TaskService) TaskShow(ctx context.Context, req *service.TaskRequest) (res
 		return resp, err
 	}
 	resp.TaskDetail = repository.BuildTasks(tRep)
+
+	// grpc 调用user模块，获取用户信息
+	etcdAddress := []string{viper.GetString("etcd.address")}
+	etcdRegister := discovery.NewRegister(etcdAddress, logrus.New())
+	targetServer, err := etcdRegister.GetTargetServer("/v1/user/grpc")
+	if err != nil {
+		resp.Code = e.ERROR
+		return resp, err
+	}
+	opts := []grpc.DialOption{
+		grpc.WithInsecure(),
+	}
+	userConn, _ := grpc.Dial(targetServer.Addr, opts...)
+	user := dependency.NewUserServiceClient(userConn)
+	userResp, err := user.UserInfo(context.Background(), &dependency.UserModel{
+		UserID: req.UserID,
+	})
+	if err != nil {
+		userResp = &dependency.UserDetailResponse{}
+	}
+	resp.UserName = userResp.GetUserDetail().UserName
+	resp.NickName = userResp.GetUserDetail().NickName
 	return resp, nil
 }
 

@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "e22e800c-7321-4511-9d51-b846ebf6141d",
+		"_postman_id": "68f65510-19bb-4dba-bba3-357ad7e35651",
 		"name": "gRPC-todoList",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "10242828"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -15,36 +14,22 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "UserName",
-									"value": "FanOne",
-									"type": "text"
-								},
-								{
-									"key": "NickName",
-									"value": "CocaineCong",
-									"type": "text"
-								},
-								{
-									"key": "Password",
-									"value": "12345678",
-									"type": "text"
-								},
-								{
-									"key": "PasswordConfirm",
-									"value": "12345678",
-									"type": "text"
+							"mode": "raw",
+							"raw": "{\n    \"UserName\": \"FanOne\",\n    \"NickName\": \"CocaineCong\",\n    \"Password\": \"12345678\",\n    \"PasswordConfirm\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
-							"raw": "{{url}}/user/register",
+							"raw": "{{url}}/api/v1/user/register",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"user",
 								"register"
 							]
@@ -55,38 +40,31 @@
 							"name": "用户注册",
 							"originalRequest": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
 								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "UserName",
-											"value": "FanOne",
-											"type": "text"
-										},
-										{
-											"key": "NickName",
-											"value": "CocaineCong",
-											"type": "text"
-										},
-										{
-											"key": "Password",
-											"value": "12345678",
-											"type": "text"
-										},
-										{
-											"key": "PasswordConfirm",
-											"value": "12345678",
-											"type": "text"
+									"mode": "raw",
+									"raw": "{\n    \"UserName\": \"FanOne\",\n    \"NickName\": \"CocaineCong\",\n    \"Password\": \"12345678\",\n    \"PasswordConfirm\": \"12345678\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
 										}
-									]
+									}
 								},
 								"url": {
-									"raw": "{{url}}/user/register",
+									"raw": "{{url}}/api/v1/user/register",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"user",
 										"register"
 									]
@@ -110,7 +88,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"Status\": 200,\n    \"Data\": {\n        \"UserDetail\": {},\n        \"Code\": 200\n    },\n    \"Msg\": \"ok\",\n    \"Error\": \"\"\n}"
+							"body": "{\n    \"UserDetail\": {\n        \"UserID\": 32,\n        \"UserName\": \"FanOne\",\n        \"NickName\": \"CocaineCong\"\n    },\n    \"Token\": \"\",\n    \"Code\": 200\n}"
 						}
 					]
 				},
@@ -120,26 +98,22 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "UserName",
-									"value": "FanOne",
-									"type": "text"
-								},
-								{
-									"key": "Password",
-									"value": "12345678",
-									"type": "text"
+							"mode": "raw",
+							"raw": "{\n    \"UserName\": \"FanOne\",\n    \"Password\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
-							"raw": "{{url}}/user/login",
+							"raw": "{{url}}/api/v1/user/login",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
+								"api",
+								"v1",
 								"user",
 								"login"
 							]
@@ -150,28 +124,31 @@
 							"name": "用户登录",
 							"originalRequest": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
 								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "UserName",
-											"value": "FanOne",
-											"type": "text"
-										},
-										{
-											"key": "Password",
-											"value": "12345678",
-											"type": "text"
+									"mode": "raw",
+									"raw": "{\n    \"UserName\": \"FanOne\",\n    \"Password\": \"12345678\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
 										}
-									]
+									}
 								},
 								"url": {
-									"raw": "{{url}}/user/login",
+									"raw": "{{url}}/api/v1/user/login",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
+										"api",
+										"v1",
 										"user",
 										"login"
 									]
@@ -195,7 +172,232 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"Status\": 200,\n    \"Data\": {\n        \"User\": {\n            \"UserID\": 1,\n            \"UserName\": \"FanOne\",\n            \"NickName\": \"CocaineCong\"\n        },\n        \"Token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE2NTUwNDkzMjUsImlzcyI6IjM4Mzg0LVNlYXJjaEVuZ2luZSJ9.uvJ4-wbCo3jJgJ5stSK8cb4J5lKEV2ft1ucCJ5v8r58\"\n    },\n    \"Msg\": \"ok\",\n    \"Error\": \"\"\n}"
+							"body": "{\n    \"UserDetail\": {\n        \"UserID\": 32,\n        \"UserName\": \"FanOne\",\n        \"NickName\": \"CocaineCong\"\n    },\n    \"Token\": \"$2a$12$eMhAB8yVxVlSGAJzuz3SNeLU58CShW4nDb1ECroCZNWnaBPoKdaIy\",\n    \"Code\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "用户token校验",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "$2a$12$eMhAB8yVxVlSGAJzuz3SNeLU58CShW4nDb1ECroCZNWnaBPoKdaIy",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/user/auth-check",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"auth-check"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "用户token校验",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "$2a$12$eMhAB8yVxVlSGAJzuz3SNeLU58CShW4nDb1ECroCZNWnaBPoKdaIy",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/v1/user/auth-check",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"auth-check"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 11 Jun 2022 15:55:25 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "278"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"UserDetail\": null,\n    \"Token\": \"$2a$12$eMhAB8yVxVlSGAJzuz3SNeLU58CShW4nDb1ECroCZNWnaBPoKdaIy\",\n    \"Code\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "查询用户信息",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "$2a$12$eMhAB8yVxVlSGAJzuz3SNeLU58CShW4nDb1ECroCZNWnaBPoKdaIy",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/user/info?UserID=32",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"info"
+							],
+							"query": [
+								{
+									"key": "UserID",
+									"value": "32"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "查询用户信息",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "$2a$12$KUPcACQ/R.k7frvqc5y7CeE1zMgU13dltuFAwGyuzvfqaQRUvyVKG",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/v1/user/info?UserID=32",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"info"
+									],
+									"query": [
+										{
+											"key": "UserID",
+											"value": "32"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 11 Jun 2022 15:55:25 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "278"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"UserDetail\": {\n        \"UserID\": 32,\n        \"UserName\": \"FanOne\",\n        \"NickName\": \"CocaineCong\"\n    },\n    \"Token\": \"\",\n    \"Code\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "用户登出",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "$2a$12$eMhAB8yVxVlSGAJzuz3SNeLU58CShW4nDb1ECroCZNWnaBPoKdaIy",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/v1/user/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"logout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "用户登录",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "$2a$12$eMhAB8yVxVlSGAJzuz3SNeLU58CShW4nDb1ECroCZNWnaBPoKdaIy",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/api/v1/user/logout",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"logout"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 11 Jun 2022 15:55:25 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "278"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"UserDetail\": null,\n    \"Token\": \"\",\n    \"Code\": 200\n}"
 						}
 					]
 				}
@@ -216,42 +418,24 @@
 							}
 						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "Title",
-									"value": "一键三连",
-									"type": "text"
-								},
-								{
-									"key": "Content",
-									"value": "我太喜欢一键三连啦！",
-									"type": "text"
-								},
-								{
-									"key": "Status",
-									"value": "0",
-									"type": "text"
-								},
-								{
-									"key": "StartTime",
-									"value": "0",
-									"type": "text"
-								},
-								{
-									"key": "EndTime",
-									"value": "0",
-									"type": "text"
+							"mode": "raw",
+							"raw": "{\n    \"Title\": \"一键三连\",\n    \"Content\": \"我太喜欢一键三连啦！\",\n    \"Status\": 0,\n    \"StartTime\": 0,\n    \"EndTime\": 0,\n    \"UserID\": 32\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
-							"raw": "{{url}}/task",
+							"raw": "{{url}}/api/v1/task/create",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"task"
+								"api",
+								"v1",
+								"task",
+								"create"
 							]
 						}
 					},
@@ -265,45 +449,33 @@
 										"key": "Authorization",
 										"value": "{{token}}",
 										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
 									}
 								],
 								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "Title",
-											"value": "一键三连",
-											"type": "text"
-										},
-										{
-											"key": "Content",
-											"value": "我太喜欢一键三连啦！",
-											"type": "text"
-										},
-										{
-											"key": "Status",
-											"value": "0",
-											"type": "text"
-										},
-										{
-											"key": "StartTime",
-											"value": "0",
-											"type": "text"
-										},
-										{
-											"key": "EndTime",
-											"value": "0",
-											"type": "text"
+									"mode": "raw",
+									"raw": "{\n    \"Title\": \"一键三连\",\n    \"Content\": \"我太喜欢一键三连啦！\",\n    \"Status\": 0,\n    \"StartTime\": 0,\n    \"EndTime\": 0,\n    \"UserID\": 32\n}",
+									"options": {
+										"raw": {
+											"language": "json"
 										}
-									]
+									}
 								},
 								"url": {
-									"raw": "{{url}}/task",
+									"raw": "{{url}}/api/v1/task/create",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
-										"task"
+										"api",
+										"v1",
+										"task",
+										"create"
 									]
 								}
 							},
@@ -325,7 +497,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"Status\": 200,\n    \"Data\": {\n        \"Code\": 200,\n        \"Msg\": \"ok\"\n    },\n    \"Msg\": \"ok\",\n    \"Error\": \"\"\n}"
+							"body": "{\n    \"Code\": 200,\n    \"Msg\": \"ok\",\n    \"Data\": \"\"\n}"
 						}
 					]
 				},
@@ -341,12 +513,21 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/task",
+							"raw": "{{url}}/api/v1/task/show?UserID=32",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"task"
+								"api",
+								"v1",
+								"task",
+								"show"
+							],
+							"query": [
+								{
+									"key": "UserID",
+									"value": "32"
+								}
 							]
 						}
 					},
@@ -363,12 +544,21 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/task",
+									"raw": "{{url}}/api/v1/task/show?UserID=32",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
-										"task"
+										"api",
+										"v1",
+										"task",
+										"show"
+									],
+									"query": [
+										{
+											"key": "UserID",
+											"value": "32"
+										}
 									]
 								}
 							},
@@ -390,7 +580,102 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"Status\": 200,\n    \"Data\": {\n        \"TaskDetail\": [\n            {\n                \"TaskID\": 4,\n                \"UserID\": 1,\n                \"Title\": \"一键三连\",\n                \"Content\": \"我太喜欢一键三连啦！\"\n            }\n        ],\n        \"Code\": 200\n    },\n    \"Msg\": \"ok\",\n    \"Error\": \"\"\n}"
+							"body": "{\n    \"Code\": 200,\n    \"TaskDetail\": [\n        {\n            \"TaskID\": 4,\n            \"UserID\": 32,\n            \"Status\": 0,\n            \"Title\": \"一键三连\",\n            \"Content\": \"我太喜欢一键三连啦！\",\n            \"StartTime\": 0,\n            \"EndTime\": 0\n        }\n    ],\n    \"UserName\": \"FanOne\",\n    \"NickName\": \"CocaineCong\"\n}"
+						}
+					]
+				},
+				{
+					"name": "删除备忘录",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"TaskID\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/task/delete",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"task",
+								"delete"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "修改备忘录",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"TaskID\": 4\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/task/delete",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"task",
+										"delete"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 11 Jun 2022 16:10:24 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "67"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"Code\": 200,\n    \"Msg\": \"ok\",\n    \"Data\": \"\"\n}"
 						}
 					]
 				},
@@ -406,47 +691,24 @@
 							}
 						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "TaskID",
-									"value": "1",
-									"type": "text"
-								},
-								{
-									"key": "Title",
-									"value": "我太喜欢点赞了！",
-									"type": "text"
-								},
-								{
-									"key": "Content",
-									"value": "拒绝白嫖，从我做起",
-									"type": "text"
-								},
-								{
-									"key": "Status",
-									"value": "1",
-									"type": "text"
-								},
-								{
-									"key": "StartTime",
-									"value": "1",
-									"type": "text"
-								},
-								{
-									"key": "EndTime",
-									"value": "1",
-									"type": "text"
+							"mode": "raw",
+							"raw": "{\n    \"Title\": \"一键三连\",\n    \"Content\": \"我太喜欢一键三连啦！ 我不喜欢了。。。\",\n    \"Status\": 0,\n    \"StartTime\": 0,\n    \"EndTime\": 0,\n    \"TaskID\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
-							"raw": "{{url}}/task",
+							"raw": "{{url}}/api/v1/task/update",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"task"
+								"api",
+								"v1",
+								"task",
+								"update"
 							]
 						}
 					},
@@ -460,42 +722,22 @@
 										"key": "Authorization",
 										"value": "{{token}}",
 										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
 									}
 								],
 								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "TaskID",
-											"value": "1",
-											"type": "text"
-										},
-										{
-											"key": "Title",
-											"value": "我太喜欢点赞了！",
-											"type": "text"
-										},
-										{
-											"key": "Content",
-											"value": "拒绝白嫖，从我做起",
-											"type": "text"
-										},
-										{
-											"key": "Status",
-											"value": "1",
-											"type": "text"
-										},
-										{
-											"key": "StartTime",
-											"value": "1",
-											"type": "text"
-										},
-										{
-											"key": "EndTime",
-											"value": "1",
-											"type": "text"
+									"mode": "raw",
+									"raw": "{\n    \"Title\": \"一键三连\",\n    \"Content\": \"我太喜欢一键三连啦！ 我不喜欢了。。。\",\n    \"Status\": 0,\n    \"StartTime\": 0,\n    \"EndTime\": 0,\n    \"TaskID\": 4\n}",
+									"options": {
+										"raw": {
+											"language": "json"
 										}
-									]
+									}
 								},
 								"url": {
 									"raw": "{{url}}/task",
@@ -525,76 +767,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"Status\": 200,\n    \"Data\": {\n        \"Code\": 200,\n        \"Msg\": \"ok\"\n    },\n    \"Msg\": \"ok\",\n    \"Error\": \"\"\n}"
-						}
-					]
-				},
-				{
-					"name": "删除备忘录",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{url}}/task",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"task"
-							]
-						}
-					},
-					"response": [
-						{
-							"name": "删除备忘录",
-							"originalRequest": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "TaskID",
-											"value": "2",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{url}}/task",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"task"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Date",
-									"value": "Sat, 11 Jun 2022 16:12:43 GMT"
-								},
-								{
-									"key": "Content-Length",
-									"value": "67"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"Status\": 200,\n    \"Data\": {\n        \"Code\": 200,\n        \"Msg\": \"ok\"\n    },\n    \"Msg\": \"ok\",\n    \"Error\": \"\"\n}"
+							"body": "{\n    \"Code\": 200,\n    \"Msg\": \"ok\",\n    \"Data\": \"\"\n}"
 						}
 					]
 				}
@@ -649,9 +822,41 @@
 						}
 					],
 					"cookie": [],
-					"body": "\"success\""
+					"body": "{\n    \"data\": null,\n    \"msg\": \"fail\",\n    \"status\": 401\n}"
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "127.0.0.1:8034",
+			"type": "default"
+		},
+		{
+			"key": "token",
+			"value": "$2a$12$eMhAB8yVxVlSGAJzuz3SNeLU58CShW4nDb1ECroCZNWnaBPoKdaIy",
+			"type": "default"
 		}
 	]
 }

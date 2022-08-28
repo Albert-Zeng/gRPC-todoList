@@ -2,6 +2,7 @@ server:
   domain: task
   version: 1.0
   jwtSecret: 38324
+  httpAddress: "127.0.0.1:10012"
   grpcAddress: "127.0.0.1:10002"
 
 mysql:
@@ -10,7 +11,7 @@ mysql:
   port: 3306
   database: grpc_todo_list
   username: root
-  password: root
+  password: 123456
   charset: utf8mb4
 
 etcd:
